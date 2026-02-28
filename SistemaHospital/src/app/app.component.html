@@ -1,0 +1,115 @@
+<nav class="navbar navbar-expand navbar-dark bg-primary mb-4 px-3 shadow">
+  <a class="navbar-brand fw-bold" href="#">🏥 Hospital San Juan</a>
+  <div class="navbar-nav me-auto">
+    <button class="btn nav-link" [class.active]="vistaActual==='pacientes'" (click)="vistaActual='pacientes'">Pacientes</button>
+    <button class="btn nav-link" [class.active]="vistaActual==='doctores'" (click)="vistaActual='doctores'">Doctores</button>
+  </div>
+</nav>
+
+<div class="container">
+
+  <div *ngIf="vistaActual === 'pacientes'">
+    <h3 class="text-primary mb-3"><i class="bi bi-people-fill"></i> Gestión de Pacientes</h3>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="card p-3 shadow-sm border-0 bg-light">
+          <h5 class="text-primary">{{ pacienteForm.pacienteId === 0 ? 'Nuevo' : 'Editar' }} Paciente</h5>
+          
+          <label class="mt-2 fw-bold">Nombre</label>
+          <input class="form-control" [(ngModel)]="pacienteForm.nombre" placeholder="Ej. Carlos">
+          
+          <label class="mt-2 fw-bold">Apellido</label>
+          <input class="form-control" [(ngModel)]="pacienteForm.apellido" placeholder="Ej. Mendoza">
+          
+          <label class="mt-2 fw-bold">Fecha de Nacimiento</label>
+          <input type="date" class="form-control" [(ngModel)]="pacienteForm.fechaNacimiento">
+
+          <label class="mt-2 fw-bold">Teléfono</label>
+          <input class="form-control mb-3" [(ngModel)]="pacienteForm.telefono" placeholder="099...">
+
+          <button class="btn btn-primary w-100" (click)="guardarPaciente()">
+            {{ pacienteForm.pacienteId === 0 ? 'Registrar' : 'Actualizar' }}
+          </button>
+          <button *ngIf="pacienteForm.pacienteId !== 0" class="btn btn-secondary w-100 mt-2" (click)="limpiarPaciente()">Cancelar</button>
+        </div>
+      </div>
+
+      <div class="col-md-8">
+        <div class="table-responsive shadow-sm rounded">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="table-primary">
+              <tr><th>Nombres</th><th>F. Nacimiento</th><th>Teléfono</th><th>Acciones</th></tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let p of listaPacientes">
+                <td>{{ p.nombre }} {{ p.apellido }}</td>
+                <td>{{ p.fechaNacimiento | date:'dd/MM/yyyy' }}</td>
+                <td>{{ p.telefono }}</td>
+                <td>
+                  <button class="btn btn-sm btn-warning me-2" (click)="editarPaciente(p)">✏️</button>
+                  <button class="btn btn-sm btn-danger" (click)="eliminarPaciente(p.pacienteId)">🗑️</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="vistaActual === 'doctores'">
+    <h3 class="text-success mb-3"><i class="bi bi-heart-pulse-fill"></i> Gestión de Doctores</h3>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="card p-3 shadow-sm border-0 bg-light">
+          <h5 class="text-success">{{ doctorForm.doctorId === 0 ? 'Nuevo' : 'Editar' }} Doctor</h5>
+          
+          <label class="mt-2 fw-bold">Nombre</label>
+          <input class="form-control" [(ngModel)]="doctorForm.nombre" placeholder="Ej. Ana">
+          
+          <label class="mt-2 fw-bold">Apellido</label>
+          <input class="form-control" [(ngModel)]="doctorForm.apellido" placeholder="Ej. Torres">
+          
+          <label class="mt-2 fw-bold">Especialidad</label>
+          <select class="form-select mb-2" [(ngModel)]="doctorForm.especialidad">
+            <option value="">-- Seleccione --</option>
+            <option value="Cardiología">Cardiología</option>
+            <option value="Pediatría">Pediatría</option>
+            <option value="Medicina General">Medicina General</option>
+            <option value="Traumatología">Traumatología</option>
+          </select>
+
+          <label class="mt-2 fw-bold">Teléfono</label>
+          <input class="form-control mb-3" [(ngModel)]="doctorForm.telefono" placeholder="099...">
+
+          <button class="btn btn-success w-100" (click)="guardarDoctor()">
+            {{ doctorForm.doctorId === 0 ? 'Registrar' : 'Actualizar' }}
+          </button>
+          <button *ngIf="doctorForm.doctorId !== 0" class="btn btn-secondary w-100 mt-2" (click)="limpiarDoctor()">Cancelar</button>
+        </div>
+      </div>
+
+      <div class="col-md-8">
+        <div class="table-responsive shadow-sm rounded">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="table-success">
+              <tr><th>Nombres</th><th>Especialidad</th><th>Teléfono</th><th>Acciones</th></tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let d of listaDoctores">
+                <td>{{ d.nombre }} {{ d.apellido }}</td>
+                <td><span class="badge bg-secondary">{{ d.especialidad }}</span></td>
+                <td>{{ d.telefono }}</td>
+                <td>
+                  <button class="btn btn-sm btn-warning me-2" (click)="editarDoctor(d)">✏️</button>
+                  <button class="btn btn-sm btn-danger" (click)="eliminarDoctor(d.doctorId)">🗑️</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
